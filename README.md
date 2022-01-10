@@ -20,3 +20,5 @@ to the internet.
 Inspect my code and the code of the utilized third party libs and do a build of the tool and the third
 party library on your own if you don't trust my code or the code of the utilized third party libraries.
 By using this software you submit to those conditions.
+
+Feel free to [donate](https://www.paypal.com/donate?hosted_button_id=PWHF66ZYQFGS8).
