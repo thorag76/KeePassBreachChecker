@@ -42,7 +42,29 @@ public class KeePassBreachChecker {
             System.err.println("Usage: KeePassBreachChecker <KeePassDBFileLocation>");
             System.exit(1);
         }
+        this.showDisclaimer();
         this.openKeePassDB(kdbxFileLocation);
+    }
+
+    protected void showDisclaimer() {
+
+        System.out.println("Important Notice:");
+        System.out.println(
+                "This software utilizes third party code. The author of KeePassBreachChecker is not responsible for the"
+                        + " code of any third party library nor any builds of them.");
+        System.out.println("Use at own risk. If you are paranoid, use the tool only if the machine executing it is not" 
+        + " connected to the internet.");
+        System.out.println("Inspect my code and the code of the utilized third party libs and do a build of the tool and " 
+        + "third party library on your own if you don't trust my code or the code of the utilized third party libraries.");
+        System.out.println("By using this software you submit to those conditions.");
+        System.out.println();
+        System.out.print("Do you agree? (yes/no): ");
+        String answer = System.console().readLine();
+        if (!(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes"))) {
+            System.exit(0);
+        }
+        System.out.println();
+
     }
 
     protected void openKeePassDB(String kdbxFileLocation) throws Exception {
