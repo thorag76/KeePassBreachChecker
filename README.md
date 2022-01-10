@@ -11,7 +11,7 @@ It will ask for the password.
 Example: java -jar kbc-full-1.0.0.jar mypasswords.kdbx
 
 # How to build
-Clone the repository and excute the maven target "package".
+Clone the repository and execute the maven target "package".
 
 # Important Notice
 This software utilizes third party code. The author of KeePassBreachChecker is not responsible for the code of any third party library nor any builds of them.
