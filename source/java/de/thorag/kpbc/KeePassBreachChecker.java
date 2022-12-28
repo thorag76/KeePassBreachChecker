@@ -55,6 +55,7 @@ public class KeePassBreachChecker {
             System.out.println();
             System.out.println("Options:");
             System.out.println("    -s    Suppress the display of passwords on the console.");
+            System.out.println("    -y    Skip the input line and answer all questions with \"yes\"");
             System.exit(1);
         }
         this.showDisclaimer();
