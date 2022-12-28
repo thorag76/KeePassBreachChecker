@@ -3,7 +3,7 @@
   <groupId>de.thorag.kpbc</groupId>
   <artifactId>kpbc</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>keepass-breach-checker</name>
   <description>A simple utility to check a local KeePass database for password leaks in "haveibeenpwnd".</description>
   <url>https://github.com/thorag76/kpbc</url>
@@ -76,7 +76,6 @@
     <directory>target</directory>
     <finalName>kpbc-${version}</finalName>
     <plugins>
-      <!-- we want JDK 1.6 source and binary compatiblility -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

@@ -232,7 +232,7 @@ SOFTWARE.
 ================================ End of License ===============================
 
 
-============================ License for sponycastle ==========================
+============================ License for spongycastle =========================
 
 Copyright (c) 2000-2015 The Legion of the Bouncy Castle Inc. 
 (http://www.bouncycastle.org)

@@ -26,6 +26,10 @@ public class KeePassBreachChecker {
     protected static final String NL = System.lineSeparator();
 
     protected static final String API_URL = "https://api.pwnedpasswords.com/range/";
+    
+    protected boolean suppressPrintingOfPassword;
+
+    protected boolean answerIsYes;
 
     public static void main(String[] args) throws Exception {
         new KeePassBreachChecker().start(args);
@@ -35,44 +39,66 @@ public class KeePassBreachChecker {
 
         String kdbxFileLocation = null;
         for (String arg : args) {
-            kdbxFileLocation = arg;
+            if (arg.startsWith("-")) {
+                this.parseArg(arg);
+            } else {
+                kdbxFileLocation = arg;
+            }
         }
 
+        System.out.println("KeePassBreachChecker (c) 2022 by thorag");
+        System.out.println();
+
         if (kdbxFileLocation == null) {
-            System.err.println("Usage: KeePassBreachChecker <KeePassDBFileLocation>");
+            System.out.println("Usage:");
+            System.out.println("KeePassBreachChecker [Option] <KeePassDBFileLocation>");
+            System.out.println();
+            System.out.println("Options:");
+            System.out.println("    -s    Suppress the display of passwords on the console.");
             System.exit(1);
         }
         this.showDisclaimer();
-        this.openKeePassDB(kdbxFileLocation);
+        this.processKeePassDB(kdbxFileLocation);
+    }
+
+    protected void parseArg(String arg) {
+
+        if (arg.equals("-s")) {
+            this.suppressPrintingOfPassword = true;
+        } else if (arg.equals("-y")) {
+            this.answerIsYes = true;
+        }
     }
 
     protected void showDisclaimer() {
 
         System.out.println("Important Notice:");
-        System.out.println(
-                "This software utilizes third party code. The author of KeePassBreachChecker is not responsible for the"
-                        + " code of any third party library nor any builds of them.");
-        System.out.println("Use at own risk. If you are paranoid, use the tool only if the machine executing it is not" 
-        + " connected to the internet.");
-        System.out.println("Inspect my code and the code of the utilized third party libs and do a build of the tool and " 
-        + "third party library on your own if you don't trust my code or the code of the utilized third party libraries.");
-        System.out.println("By using this software you submit to those conditions.");
+        System.out.println("This software utilizes third party code. The author of " +
+                "KeePassBreachChecker is not responsible for the code of any third party library " +
+                "nor any builds of them. Use at own risk. If you are paranoid, just don't use it " +
+                "or make sure to block all traffic except the one to the \"haveibeenpwned\" API. " +
+                "Feel free to inspect my code and the code of the utilized third party libs and " +
+                "do a build of the tool and the third party library on your own if you don't trust " +
+                "the code. By using this software you submit to those conditions.");
         System.out.println();
         System.out.print("Do you agree? (yes/no): ");
-        String answer = System.console().readLine();
-        if (!(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes"))) {
-            System.exit(0);
+        if (!this.answerIsYes) {
+            String answer = System.console().readLine();
+            if (!(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes"))) {
+                System.exit(0);
+            }
+        } else {
+            System.out.println("y");
         }
         System.out.println();
-
     }
 
-    protected void openKeePassDB(String kdbxFileLocation) throws Exception {
+    protected void processKeePassDB(String kdbxFileLocation) throws Exception {
 
         Console console = System.console();
         if (console == null) {
             System.out.println("Couldn't get Console instance");
-            System.exit(0);
+            System.exit(1);
         }
 
         String pw = new String(console.readPassword("Enter password: "));
@@ -84,8 +110,10 @@ public class KeePassBreachChecker {
         for (Entry entry : entries) {
             if (this.checkBreach(entry.getPassword())) {
                 System.out.println("Entry title: " + entry.getTitle() + "| Entry URL: " + entry.getUrl()
-                        + " | Entry login: " + entry.getUsername() + NL + ">>> Pwnd PW: "
-                        + entry.getPassword());
+                        + " | Entry login: " + entry.getUsername());
+                if (!this.suppressPrintingOfPassword) {
+                    System.out.println(">>> Pwnd PW: " + entry.getPassword());
+                }
             }
         }
     }
