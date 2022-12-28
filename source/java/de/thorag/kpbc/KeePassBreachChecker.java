@@ -102,19 +102,23 @@ public class KeePassBreachChecker {
         }
 
         String pw = new String(console.readPassword("Enter password: "));
-
-        KeePassFile database = KeePassDatabase.getInstance(kdbxFileLocation).openDatabase(pw);
-
-        // Retrieve all entries
-        List<Entry> entries = database.getEntries();
-        for (Entry entry : entries) {
-            if (this.checkBreach(entry.getPassword())) {
-                System.out.println("Entry title: " + entry.getTitle() + "| Entry URL: " + entry.getUrl()
-                        + " | Entry login: " + entry.getUsername());
-                if (!this.suppressPrintingOfPassword) {
-                    System.out.println(">>> Pwnd PW: " + entry.getPassword());
+        try {
+            
+            KeePassFile database = KeePassDatabase.getInstance(kdbxFileLocation).openDatabase(pw);
+            
+            // Retrieve all entries
+            List<Entry> entries = database.getEntries();
+            for (Entry entry : entries) {
+                if (this.checkBreach(entry.getPassword())) {
+                    System.out.println("Entry title: " + entry.getTitle() + "| Entry URL: " + entry.getUrl()
+                    + " | Entry login: " + entry.getUsername());
+                    if (!this.suppressPrintingOfPassword) {
+                        System.out.println(">>> Pwnd PW: " + entry.getPassword());
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.err.println("Exception occured: " + e.getMessage());
         }
     }
 
